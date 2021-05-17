@@ -1,4 +1,5 @@
-FROM tensorflow/tensorflow:latest
+#FROM tensorflow/tensorflow:latest
+FROM tensorflow/tensorflow:latest-gpu
 
 ENV CLEAN_UP_WORKSPACE=1
 
