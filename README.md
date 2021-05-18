@@ -11,16 +11,17 @@ It's assumed that you are starting with unlabeled images and will want to use la
 2. Put your unlabeled images in the `workspace/images/raw` directory
 
 3. Run labelImg (if you have it locally or use the snipped below to use it from a container) and label your images.
-```
+
+~~~
 xhost +
 
 docker run -ti --rm \
     -e DISPLAY=$DISPLAY \
-    --device=/dev/video0:/dev/video0 \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v $DIR/workspace/images/raw:/images/ \
+    -v $(pwd)/workspace/images/raw:/images/ \
     spiridonovpolytechnic/labelimg:latest
-```
+~~~
+
 
 4. Move your images from the `workspace/images/raw` directory to the `workspace/images/train` and `workspace/images/test` directories. Typically, you might have 85% training data and 15% test data or thereabouts.
 
@@ -28,35 +29,45 @@ docker run -ti --rm \
 
 6. Run the image with the one of the training tags (latest or latest-gpu if you would like to use GPU to train)
 
-```
+~~~
 docker run \
-    --volume path/to/workspace:/tf-workspace \
+    --volume $(pwd):/tf-workspace \
     --gpus all -it \
     spiridonovpolytechnic/tensorflow-object-detection-training:latest-gpu
-```
+~~~
 
-7. Once the training finishes, you can run another image to test inferrence using your webcam with one of the images tagged with latest-infer-webcam or latest-infer-webcam-gpu.
+7. Once the training finishes, you can run another image to test inferrence using your webcam with one of the images tagged with latest-infer-webcam or latest-infer-webcam-gpu. ALternative, you can use latest-infer-file-to-screen or latest-infer-file-to-screen-gpu tags to test inferrence against an input video file.
 
-```
+~~~
 docker run -e DISPLAY=$DISPLAY \
     --device=/dev/video0:/dev/video0 \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
-    --volume path/to/workspace:/tf-workspace \
+    --volume $(pwd):/tf-workspace \
     --gpus all \
     spiridonovpolytechnic/tensorflow-object-detection-training:latest-infer-webcam-gpu
-```
+~~~
+
+~~~
+docker run -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    --volume $(pwd):/tf-workspace \
+    --volume /path/to/directory_with_input_video:/input/ \
+    -e "INPUT=name_of_input_video_file" \
+    --gpus all \
+    spiridonovpolytechnic/tensorflow-object-detection-training:latest-infer-file-to-screen-gpu
+~~~
 
 Build and run container locally for testing via
-```
+~~~
 docker build -t tfod_test -f Dockerfile.gpu .
-docker run --volume path/to/workspace:/tf-workspace --gpus all -it tfod_test bash
-```
+docker run --volume $(pwd):/tf-workspace --gpus all -it tfod_test bash
+~~~
 
 Object detection tested within the container using
-```
+~~~
 cd ~/tf/models/research/
 python object_detection/builders/model_builder_tf2_test.py
-```
+~~~
 
 
 ## Credit

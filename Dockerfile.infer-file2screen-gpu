@@ -1,0 +1,33 @@
+FROM tensorflow/tensorflow:latest-gpu
+
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    protobuf-compiler \
+    git \
+    ffmpeg \
+    libsm6 \
+    libxext6
+
+RUN pip install \
+    pyyaml
+
+RUN mkdir /tf
+RUN mkdir /tf/models
+
+RUN git clone https://github.com/tensorflow/models /tf/models
+
+RUN cd /tf/models/research && \
+    protoc object_detection/protos/*.proto --python_out=.
+
+RUN cd /tf/models/research && \
+    cp object_detection/packages/tf2/setup.py . && \
+    python -m pip install .
+
+RUN pip install --ignore-installed \
+    opencv-python
+
+COPY src /app
+
+WORKDIR /app
+
+CMD python infer_file_to_screen.py
