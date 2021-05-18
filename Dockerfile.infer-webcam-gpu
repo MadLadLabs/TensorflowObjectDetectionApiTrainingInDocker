@@ -1,25 +1,18 @@
 FROM tensorflow/tensorflow:latest-gpu
 
-ENV CLEAN_UP_WORKSPACE=1
-
 RUN apt-get update && apt-get install -y \
     python3-pip \
     protobuf-compiler \
-    wget \
-    git
+    git \
+    ffmpeg \
+    libsm6 \
+    libxext6
 
 RUN pip install \
-    pyyaml \
-    pandas \
-    wget
+    pyyaml
 
 RUN mkdir /tf
-RUN mkdir /tf/scripts
 RUN mkdir /tf/models
-
-RUN wget \
-    https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/_downloads/da4babe668a8afb093cc7776d7e630f3/generate_tfrecord.py \
-    -P /tf/scripts
 
 RUN git clone https://github.com/tensorflow/models /tf/models
 
@@ -30,8 +23,11 @@ RUN cd /tf/models/research && \
     cp object_detection/packages/tf2/setup.py . && \
     python -m pip install .
 
+RUN pip install --ignore-installed \
+    opencv-python
+
 COPY src /app
 
 WORKDIR /app
 
-CMD python prepare_training_data_set.py && . /train.sh
+CMD python infer_webcam.py
