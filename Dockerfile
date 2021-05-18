@@ -34,4 +34,4 @@ COPY src /app
 
 WORKDIR /app
 
-CMD python app.py && . /train.sh
+CMD python prepare_training_data_set.py && . /train.sh
