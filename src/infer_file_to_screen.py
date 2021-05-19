@@ -12,9 +12,9 @@ import common_config
 
 print(cv2.getBuildInformation()) 
 
-input_filename = os.getenv('INPUT')
+input_filename = common_config.model_config['input_test_file']
 if input_filename is None:
-    print('No input file name set in INPUT env var. Set using "-e "INPUT=FILENAME"" in docker run statement.')
+    print('No input file name set via config.yml file.')
     exit(1)
 
 if not os.path.exists(f'/input/{input_filename}'):
@@ -27,7 +27,7 @@ detection_model = model_builder.build(model_config=configs['model'], is_training
 
 # Restore checkpoint
 ckpt = tf.compat.v2.train.Checkpoint(model=detection_model)
-ckpt.restore(os.path.join(common_config.CHECKPOINT_PATH, 'ckpt-6')).expect_partial()
+ckpt.restore(os.path.join(common_config.CHECKPOINT_PATH, common_config.model_config['checkpoint'] )).expect_partial()
 
 @tf.function
 def detect_fn(image):
