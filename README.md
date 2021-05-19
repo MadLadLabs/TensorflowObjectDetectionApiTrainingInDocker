@@ -6,7 +6,7 @@ The purpose of these images is to allow you to quickly train an object detection
 
 It's assumed that you are starting with unlabeled images and will want to use labelImage by tzutalin.
 
-1. Clone the repo to get the workspace scaffolded (git clone https://github.com/MadLadLabs/TensorflowObjectDetectionApiTrainingInDocker.git) and cd into it
+1. Clone the repo to get the workspace scaffolded (git clone https://github.com/MadLadLabs/TensorflowObjectDetectionApiTrainingInDocker.git) and cd into the `workspace` directory in the project
 
 2. Put your unlabeled images in the `workspace/images/raw` directory
 
@@ -18,7 +18,7 @@ xhost +
 docker run -ti --rm \
     -e DISPLAY=$DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v $(pwd)/workspace/images/raw:/images/ \
+    -v $(pwd)/images/raw:/images/ \
     spiridonovpolytechnic/labelimg:latest
 ~~~
 
@@ -47,12 +47,13 @@ docker run -e DISPLAY=$DISPLAY \
     spiridonovpolytechnic/tensorflow-object-detection-training:latest-infer-webcam-gpu
 ~~~
 
+
+(when using image with inferrence on file input, set the input property in config.yml)
 ~~~
 docker run -e DISPLAY=$DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     --volume $(pwd):/tf-workspace \
     --volume /path/to/directory_with_input_video:/input/ \
-    -e "INPUT=name_of_input_video_file" \
     --gpus all \
     spiridonovpolytechnic/tensorflow-object-detection-training:latest-infer-file-to-screen-gpu
 ~~~

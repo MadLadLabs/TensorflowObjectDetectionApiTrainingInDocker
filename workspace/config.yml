@@ -6,3 +6,5 @@ labels:
 train_batch_size: 4
 num_train_steps: 5000
 pretrained_model_url: http://download.tensorflow.org/models/object_detection/tf2/20200711/ssd_mobilenet_v2_fpnlite_320x320_coco17_tpu-8.tar.gz
+input_test_file: null
+checkpoint: ckpt-6
