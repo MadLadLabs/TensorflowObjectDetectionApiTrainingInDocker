@@ -36,9 +36,6 @@ if not os.path.exists(common_config.MODELS_PATH):
 if not os.path.exists(common_config.MODEL_PATH):
     os.mkdir(common_config.MODEL_PATH)
 
-if not os.path.exists(common_config.TFLITE_GRAPH_PATH):
-    os.mkdir(common_config.TFLITE_GRAPH_PATH)
-
 if not os.path.exists(common_config.TFLITE_MODEL_PATH):
     os.mkdir(common_config.TFLITE_MODEL_PATH)
 
@@ -81,4 +78,4 @@ with open(f'/export_tflite.sh', 'w') as f:
     f.write(f'python {common_config.APIMODEL_PATH}/research/object_detection/export_tflite_graph_tf2.py '
             f'--pipeline_config_path={common_config.CUSTOM_MODEL_CONFIG} '
             f'--trained_checkpoint_dir={common_config.CHECKPOINT_PATH} '
-            f'--output_directory={common_config.TFLITE_GRAPH_PATH}')
+            f'--output_directory={common_config.MODEL_PATH}')
