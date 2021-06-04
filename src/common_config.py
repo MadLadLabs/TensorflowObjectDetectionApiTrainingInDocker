@@ -15,6 +15,9 @@ with open(f'{WORKSPACE_PATH}/config.yml') as model_config_file:
 
 MODEL_NAME = model_config["name"]
 MODEL_PATH = f'{MODELS_PATH}/{MODEL_NAME}'
+TFLITE_GRAPH_PATH = f'{MODELS_PATH}/{MODEL_NAME}-tflite-graph'
+TFLITE_MODEL_PATH = f'{MODELS_PATH}/{MODEL_NAME}-tflite-model'
+TFLITE_MODEL_FILE_PATH = f'{TFLITE_MODEL_PATH}/{MODEL_NAME}.tflite'
 
 CONFIG_PATH = f'{MODEL_PATH}/pipeline.config'
 CHECKPOINT_PATH = f'{MODEL_PATH}/'

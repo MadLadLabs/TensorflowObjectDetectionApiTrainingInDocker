@@ -36,6 +36,12 @@ if not os.path.exists(common_config.MODELS_PATH):
 if not os.path.exists(common_config.MODEL_PATH):
     os.mkdir(common_config.MODEL_PATH)
 
+if not os.path.exists(common_config.TFLITE_GRAPH_PATH):
+    os.mkdir(common_config.TFLITE_GRAPH_PATH)
+
+if not os.path.exists(common_config.TFLITE_MODEL_PATH):
+    os.mkdir(common_config.TFLITE_MODEL_PATH)
+
 CONFIG_PATH = f'{common_config.PRETRAINED_MODEL_PATH}/{pretrained_model_name}/pipeline.config'
 
 shutil.copy(CONFIG_PATH, common_config.MODEL_PATH)
@@ -70,3 +76,9 @@ with open(f'/train.sh', 'w') as f:
             f'--model_dir={common_config.MODEL_PATH} '
             f'--pipeline_config_path={common_config.CUSTOM_MODEL_CONFIG} '
             f'--num_train_steps={common_config.model_config["num_train_steps"]}')
+
+with open(f'/export_tflite.sh', 'w') as f:
+    f.write(f'python {common_config.APIMODEL_PATH}/research/object_detection/export_tflite_graph_tf2.py '
+            f'--pipeline_config_path={common_config.CUSTOM_MODEL_CONFIG} '
+            f'--trained_checkpoint_dir={common_config.CHECKPOINT_PATH} '
+            f'--output_directory={common_config.TFLITE_GRAPH_PATH}')

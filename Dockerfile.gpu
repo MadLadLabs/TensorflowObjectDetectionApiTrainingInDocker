@@ -34,4 +34,7 @@ COPY src /app
 
 WORKDIR /app
 
-CMD python prepare_training_data_set.py && . /train.sh
+CMD python prepare_training_data_set.py && \
+    . /train.sh && \
+    . /export_tflite.sh && \
+    python convert_to_tflite_model.py
