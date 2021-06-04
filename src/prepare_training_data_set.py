@@ -36,9 +36,6 @@ if not os.path.exists(common_config.MODELS_PATH):
 if not os.path.exists(common_config.MODEL_PATH):
     os.mkdir(common_config.MODEL_PATH)
 
-if not os.path.exists(common_config.TFLITE_MODEL_PATH):
-    os.mkdir(common_config.TFLITE_MODEL_PATH)
-
 CONFIG_PATH = f'{common_config.PRETRAINED_MODEL_PATH}/{pretrained_model_name}/pipeline.config'
 
 shutil.copy(CONFIG_PATH, common_config.MODEL_PATH)
