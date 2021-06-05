@@ -1,7 +1,7 @@
 import tensorflow as tf
 import common_config
 
-
+print('Converting saved model to TFLite model')
 
 # Convert the model
 converter = tf.lite.TFLiteConverter.from_saved_model(common_config.TFLITE_GRAPH_PATH) # path to the SavedModel directory
@@ -25,5 +25,8 @@ converter = tf.lite.TFLiteConverter.from_saved_model(common_config.TFLITE_GRAPH_
 tflite_model = converter.convert()
 
 # Save the model.
-with open('f{common_config.TFLITE_MODEL_FILE_PATH}', 'wb') as f:
-  f.write(tflite_model)
+with open(f'{common_config.TFLITE_MODEL_FILE_PATH}', 'wb') as f:
+    print(f'writing tflite model to {common_config.TFLITE_MODEL_FILE_PATH}')
+    print(len(tflite_model))
+    f.write(tflite_model)
+    print(f'finished writing tflite model to {common_config.TFLITE_MODEL_FILE_PATH}')
